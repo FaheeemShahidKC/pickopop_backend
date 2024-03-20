@@ -1,6 +1,7 @@
 import express from 'express'
 import cors from 'cors'
 import cookieParser from 'cookie-parser'
+import router from '../routes/adminRoute'
 
 export const createServer = () => {
      try {
@@ -15,7 +16,12 @@ export const createServer = () => {
                     credentials: true
                })
           )
+          app.use('/admin', router)
+          app.use((req, res) => {
+               res.status(404).send('It is Not Found');
+          });
           return app
+
      } catch (error) {
           console.error('An error occurred while setting up the server:', error);
      }

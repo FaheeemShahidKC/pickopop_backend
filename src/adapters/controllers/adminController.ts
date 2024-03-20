@@ -10,8 +10,8 @@ class AdminController {
      async login(req: Request, res: Response) {
           try {
                const { email, password } = req.body
-               let data = this.useCase.login(email, password)
-               if (data.success) {
+               let data = await this.useCase.login(email, password)
+               if (data && data.success) {
                     res.status(200).json(data)
                } else {
                     res.status(401).json(data)

@@ -1,24 +1,24 @@
 import Admin from "../domian/admin";
 import AdminRepository from "../infrastructure/repository/adminRepository";
 import Jwt from "../infrastructure/utils/jwt";
-import HashPassword from "../infrastructure/utils/hashPassword";
+import BcryptPassword from "../infrastructure/utils/bcryptPassword";
 
 class AdminUseCase {
-     private repository
-     private jwt
-     private hash
+     private repository:AdminRepository
+     private jwt:Jwt
+     private bcrypt:BcryptPassword
 
-     constructor(repository: AdminRepository, jwt: Jwt, hash: HashPassword) {
+     constructor(repository: AdminRepository, jwt: Jwt, bcrypt: BcryptPassword) {
           this.repository = repository
           this.jwt = jwt
-          this.hash = hash
+          this.bcrypt = bcrypt
      }
 
      async login(email: string, password: string) {
           try {
-               let foundedAdmin = await this.repository.findAdminByEmail(email)
+               let foundedAdmin:any = await this.repository.findAdminByEmail(email)
                if (foundedAdmin) {
-                    let passwordCheck: boolean = await this.hash.compare(password, foundedAdmin.password)
+                    let passwordCheck: boolean = await this.bcrypt.compare(password, foundedAdmin.password)
                     if (passwordCheck) {
                          let token = this.jwt.generateToken(foundedAdmin._id, 'admin')
                          return { success: true, adminData: foundedAdmin, token }

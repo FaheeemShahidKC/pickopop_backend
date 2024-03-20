@@ -4,8 +4,13 @@ import dotenv from 'dotenv'
 dotenv.config()
 
 class Jwt {
-     private static authSecret = process.env.auth_secret || ''
-     static generateToken(id: string, role: string) {
+
+     private authSecret:string ;
+
+     constructor(){
+          this.authSecret = process.env.auth_secret || ''
+     }
+     generateToken(id: string, role: string) {
           try {
                let playload = { id, role }
                const token = sign(playload, this.authSecret, { expiresIn: '10d' })
@@ -16,7 +21,7 @@ class Jwt {
           }
      }
      
-     static verifyToken(token: string): JwtPayload | null {
+     verifyToken(token: string): JwtPayload | null {
           try {
                const decoded = verify(token, this.authSecret) as JwtPayload;
                return decoded;

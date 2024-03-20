@@ -1,6 +1,6 @@
 import { hash, compare } from 'bcrypt'
 
-class HashPassword {
+class BcryptPassword {
      async hashPassword(password: string) {
           try {
                const hashedPassword = await hash(password, 10)
@@ -22,4 +22,4 @@ class HashPassword {
       }
 }
 
-export default HashPassword
+export default BcryptPassword

@@ -3,12 +3,12 @@ import AdminController from '../../adapters/controllers/adminController'
 import AdminRepository from '../repository/adminRepository'
 import AdminUseCase from '../../useCase/adminUseCase'
 import Jwt from '../utils/jwt'
-import HashPassword from '../utils/hashPassword'
+import BcryptPassword from '../utils/bcryptPassword'
 
 const jwt = new Jwt()
-const hash = new HashPassword()
+const bcrypt = new BcryptPassword()
 const repository = new AdminRepository()
-const useCase = new AdminUseCase(repository, jwt, hash)
+const useCase = new AdminUseCase(repository, jwt, bcrypt)
 const controller = new AdminController(useCase)
 const router = express.Router()
 
