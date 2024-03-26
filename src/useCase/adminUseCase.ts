@@ -1,14 +1,15 @@
 import Admin from "../domian/admin";
 import AdminRepository from "../infrastructure/repository/adminRepository";
+import IAdminRepository from "./interfaces/IAdminRepository";
 import Jwt from "../infrastructure/utils/jwt";
 import BcryptPassword from "../infrastructure/utils/bcryptPassword";
 
 class AdminUseCase {
-     private repository:AdminRepository
-     private jwt:Jwt
-     private bcrypt:BcryptPassword
+     private repository: IAdminRepository
+     private jwt: Jwt
+     private bcrypt: BcryptPassword
 
-     constructor(repository: AdminRepository, jwt: Jwt, bcrypt: BcryptPassword) {
+     constructor(repository: IAdminRepository, jwt: Jwt, bcrypt: BcryptPassword) {
           this.repository = repository
           this.jwt = jwt
           this.bcrypt = bcrypt
@@ -16,7 +17,8 @@ class AdminUseCase {
 
      async login(email: string, password: string) {
           try {
-               let foundedAdmin:any = await this.repository.findAdminByEmail(email)
+               let foundedAdmin: any = await this.repository.findAdminByEmail(email)
+
                if (foundedAdmin) {
                     let passwordCheck: boolean = await this.bcrypt.compare(password, foundedAdmin.password)
                     if (passwordCheck) {
