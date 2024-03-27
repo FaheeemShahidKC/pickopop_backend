@@ -13,10 +13,11 @@ const otp = new GenerateOTP()
 const sendMail = new SendMail()
 const repository = new UserRepository()
 
-const useCase = new UserUseCase(repository, otp, sendMail)
+const useCase = new UserUseCase(repository, otp, sendMail, jwt, bcrypt)
 const controller = new UserController(useCase)
 const router = express.Router()
 
 router.post('/signup', (req, res) => controller.signupAndSendOtp(req, res))
+router.post('/verifyOTP', (req, res) => controller.verifyOtpAndSaveUser(req, res))
 
 export default router

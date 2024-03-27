@@ -10,6 +10,7 @@ class Jwt {
      constructor(){
           this.authSecret = process.env.auth_secret || ''
      }
+     
      generateToken(id: string, role: string) {
           try {
                let playload = { id, role }

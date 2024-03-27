@@ -6,6 +6,7 @@ dotenv.config();
 class SendMail implements INodemailerInterface {
 
      private transporter;
+     
      constructor() {
           this.transporter = nodemailer.createTransport({
                service: 'gmail',
@@ -15,6 +16,7 @@ class SendMail implements INodemailerInterface {
                }
           })
      }
+
      async sendMail(to: string, otp: string): Promise<any> {
           const mailOptions = {
                from: process.env.EMAIL,
