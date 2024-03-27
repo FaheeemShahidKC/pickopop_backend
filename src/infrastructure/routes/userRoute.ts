@@ -19,5 +19,6 @@ const router = express.Router()
 
 router.post('/signup', (req, res) => controller.signupAndSendOtp(req, res))
 router.post('/verifyOTP', (req, res) => controller.verifyOtpAndSaveUser(req, res))
+router.post('/login', (req, res) => controller.login(req, res))
 
 export default router

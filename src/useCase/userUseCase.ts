@@ -48,9 +48,9 @@ class UserUseCase {
                     if (decoded.otp == userOtp) {
                          let hashedPassword = this.bcrypt.hashPassword(decoded.userData.password)
                          decoded.userData.password = hashedPassword
-                         let newUser: any = await this.repository.saveUser(decoded.userData)
+                         let newUser = await this.repository.saveUser(decoded.userData)
                          if (newUser) {
-                              let token = this.Jwt.generateToken(newUser._id, 'user')
+                              let token = this.Jwt.generateToken(newUser._id as string, 'user')
                               return { success: true, token }
                          } else {
                               return { success: false, message: "Internal server error!" }
@@ -64,6 +64,25 @@ class UserUseCase {
           } catch (error) {
                console.log(error);
                throw error
+          }
+     }
+
+     async login(email: string, password: string) {
+          try {
+               const existingUser = await this.repository.findUserByEmail(email)
+               if (existingUser) {
+                    let checkPassword = await this.bcrypt.compare(password, existingUser.password)
+                    if (!checkPassword) {
+                         return { success: false, message: "Incorrect password" }
+                    } else if (existingUser.isBlock) {
+                         return { success: false, message: "User is blocked by admin!" }
+                    } else {
+                         let token = this.Jwt.generateToken(existingUser._id as string, 'user');
+                         return { success: true, token: token };
+                    }
+               }
+          } catch (error) {
+               console.log(error);
           }
      }
 

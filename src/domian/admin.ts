@@ -1,5 +1,5 @@
 interface Admin {
-     id?: string,
+     _id?: string,
      email: string,
      password: string
 }

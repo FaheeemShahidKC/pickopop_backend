@@ -47,6 +47,29 @@ class UserController {
                res.status(500).json({ success: false, message: 'Internal server error!' })
           }
      }
+
+     async login(req: Request, res: Response) {
+          try {
+               const { email, password } = req.body
+               const userLogedIn = await this.userUseCase.login(email, password)
+               if (userLogedIn) {
+                    if (userLogedIn.success) {
+                         res.cookie('userToken', userLogedIn.token, {
+                              expires: new Date(Date.now() + 25892000000),
+                              httpOnly: true
+                         })
+                         res.status(200).json({ success: true, token: userLogedIn.token })
+                    } else {
+                         res.status(401).json({ success: false, message: userLogedIn.message })
+                    }
+               } else {
+                    res.status(401).json({ success: false, message: "Internal server error" })
+               }
+          } catch (error) {
+               console.log(error);
+
+          }
+     }
 }
 
 export default UserController
